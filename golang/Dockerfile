@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY ./golang/golang-app .
 
-RUN ls -lh
+EXPOSE 8080
 
-CMD [ "./golang-app" ]
+CMD [ "/app/golang-app" ]
