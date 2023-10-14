@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app
+  name: golang-app
   namespace: argocd
 spec:
   project: default
@@ -13,9 +13,13 @@ spec:
     syncOptions:
       - CreateNamespace=true
   source:
-    path: app
-    repoURL: "https://github.com/joebui/argocd-deployment"
+    path: .
+    repoURL: https://github.com/joebui/argocd-deployment
     targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+        - values_dev.yaml
   destination:
     namespace: dev
-    server: "https://kubernetes.default.svc"
+    server: https://kubernetes.default.svc
