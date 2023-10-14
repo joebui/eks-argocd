@@ -1,11 +1,7 @@
 FROM alpine:latest
 
-WORKDIR /app
-
-COPY ./golang-app .
-
-RUN pwd && ls -lh
+COPY ./golang-app /golang-app
 
 EXPOSE 8080
 
-CMD [ "/app/golang-app" ]
+CMD [ "/golang-app" ]
