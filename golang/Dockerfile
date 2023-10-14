@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-COPY ./golang-app /golang-app
+COPY ./app /app
 
 EXPOSE 8080
 
-CMD [ "/golang-app" ]
+CMD [ "/app" ]
