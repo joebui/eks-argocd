@@ -2,7 +2,7 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY ./golang/golang-app .
+COPY ./golang-app .
 
 EXPOSE 8080
 

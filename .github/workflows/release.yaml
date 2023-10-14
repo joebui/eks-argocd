@@ -47,8 +47,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./golang/Dockerfile
+          context: golang
+          file: ./Dockerfile
           push: true
           no-cache: true
           tags: ${{ steps.meta.outputs.tags }}
