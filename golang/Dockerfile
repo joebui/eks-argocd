@@ -2,6 +2,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY golang-app /app
+COPY ./golang/golang-app /app
 
 CMD [ "./golang-app" ]
