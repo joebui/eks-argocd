@@ -1,7 +1,7 @@
 variable "vpc_name" {
-  default = "app"
+  default = "default"
 }
 
 variable "public_subnet_name_prefix" {
-  default = "app-public-*"
+  default = "default-*"
 }

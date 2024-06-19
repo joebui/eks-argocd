@@ -1,5 +1,5 @@
 apply:
-	cd terraform && terraform apply
+	cd terraform && terraform init && terraform apply
 
 destroy:
 	cd terraform && terraform destroy
@@ -20,3 +20,32 @@ argo_delete:
 
 argo_admin:
 	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+app:
+	kubectl apply -f app.yml
+
+prom:
+	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	helm upgrade --install prometheus prometheus-community/prometheus -f ./prometheus/values.yml -n default
+
+prom_state_metrics:
+	helm upgrade --install kube-state-metrics prometheus-community/kube-state-metrics -n default
+
+alert_mana:
+	helm upgrade --install alertmanager prometheus-community/alertmanager -f ./prometheus/values.yml -n default
+
+traefik:
+	helm repo add traefik https://traefik.github.io/charts
+	helm upgrade --install traefik traefik/traefik -f ./traefik/values.yml -n default
+
+exporter:
+	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	helm upgrade --install nginx prometheus-community/prometheus-nginx-exporter -f ./exporters/nginx-value.yml -n default
+
+fluent:
+	helm repo add fluent https://fluent.github.io/helm-charts
+	helm upgrade --install fluent-bit fluent/fluent-bit -n default
+
+grafana:
+	helm repo add grafana https://grafana.github.io/helm-charts
+	helm upgrade --install grafana grafana/grafana

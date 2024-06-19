@@ -1,12 +1,13 @@
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.14.0"
 
   cluster_name                   = local.name
-  cluster_version                = "1.28"
+  cluster_version                = local.cluster_version
+  vpc_id                         = data.aws_vpc.app.id
+  subnet_ids                     = data.aws_subnets.public.ids
+  control_plane_subnet_ids       = data.aws_subnets.public.ids
   cluster_endpoint_public_access = true
-  vpc_id                         = module.vpc.vpc_id
-  subnet_ids                     = module.vpc.public_subnets
-  control_plane_subnet_ids       = module.vpc.public_subnets
 
   cluster_addons = {
     coredns = {
@@ -20,33 +21,23 @@ module "eks" {
     }
   }
 
-  # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    instance_types = ["t3a.medium"]
-  }
   eks_managed_node_groups = {
-    default = {
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
+    # default = {
+    #   instance_types = ["t3a.medium", "t3a.large"]
+    #   capacity_type  = "SPOT"
+    # }
 
-      instance_types = ["t3a.medium"]
-      capacity_type  = "SPOT"
+    default-arm = {
+      ami_type                   = "AL2_ARM_64"
+      ami_id                     = data.aws_ami.eks_default_arm.image_id
+      enable_bootstrap_user_data = true
+      instance_types             = ["t4g.medium", "t4g.large"]
+      capacity_type              = "SPOT"
     }
   }
 
-  # aws-auth configmap
-  # create_aws_auth_configmap = true
-  manage_aws_auth_configmap = true
-  aws_auth_roles            = []
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      username = "root"
-      groups   = ["system:masters"]
-    }
-  ]
-  aws_auth_accounts = [
-    data.aws_caller_identity.current.account_id
-  ]
+  enable_cluster_creator_admin_permissions = true
 }
+
+# TODO: aws-auth configmap
+# arn:aws:iam::386538717735:root

@@ -1,0 +1,22 @@
+version: "3"
+services:
+  dash:
+    image: opensearchproject/opensearch-dashboards:2
+    ports:
+      - 5601:5601
+    environment:
+      OPENSEARCH_HOSTS: '["http://os:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+    depends_on:
+      - os
+    restart: always
+  os:
+    image: opensearchproject/opensearch:latest
+    restart: always
+    ports:
+      - 9600:9600
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD='Harry123??'
+      - DISABLE_SECURITY_PLUGIN=true

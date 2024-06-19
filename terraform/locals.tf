@@ -1,3 +1,4 @@
 locals {
-  name = "hello-world"
+  name            = "hello-world"
+  cluster_version = "1.30"
 }

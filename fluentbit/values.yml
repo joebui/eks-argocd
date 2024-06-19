@@ -1,0 +1,25 @@
+config:
+  ## https://docs.fluentbit.io/manual/pipeline/filters
+  filters: |
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+
+  ## https://docs.fluentbit.io/manual/pipeline/outputs
+  outputs: |
+    [OUTPUT]
+        Name opensearch
+        Match *
+        Host 172.31.38.187
+        Port 9200
+        Logstash_Format On
+        Retry_Limit False
+        Index my_index
+        Type my_type
+        Suppress_Type_Name On
+        Trace_Error On
+        Replace_Dots On
