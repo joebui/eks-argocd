@@ -49,3 +49,10 @@ fluent:
 grafana:
 	helm repo add grafana https://grafana.github.io/helm-charts
 	helm upgrade --install grafana grafana/grafana
+
+istio:
+	helm repo add istio https://istio-release.storage.googleapis.com/charts
+	helm upgrade --install istio-base istio/base -n istio-system --create-namespace --wait
+	helm upgrade --install istio-cni istio/cni -n istio-system --set profile=ambient --wait
+	helm upgrade --install istiod istio/istiod -n istio-system --set profile=ambient --wait
+	helm upgrade --install ztunnel istio/ztunnel -n istio-system --wait
