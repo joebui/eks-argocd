@@ -8,4 +8,4 @@ service:
 ports:
   metrics:
     expose:
-      default: true
+      default: false

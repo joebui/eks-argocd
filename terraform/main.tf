@@ -31,7 +31,7 @@ module "eks" {
       ami_type                   = "AL2_ARM_64"
       ami_id                     = data.aws_ami.eks_default_arm.image_id
       enable_bootstrap_user_data = true
-      instance_types             = ["t4g.medium", "t4g.large"]
+      instance_types             = ["t4g.medium"]
       capacity_type              = "SPOT"
     }
   }
@@ -40,4 +40,4 @@ module "eks" {
 }
 
 # TODO: aws-auth configmap
-# arn:aws:iam::386538717735:root
+# arn:aws:iam::<acc id>:root

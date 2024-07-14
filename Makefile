@@ -21,9 +21,6 @@ argo_delete:
 argo_admin:
 	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
-app:
-	kubectl apply -f app.yml
-
 prom:
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 	helm upgrade --install prometheus prometheus-community/prometheus -f ./prometheus/values.yml -n default
@@ -36,7 +33,8 @@ alert_mana:
 
 traefik:
 	helm repo add traefik https://traefik.github.io/charts
-	helm upgrade --install traefik traefik/traefik -f ./traefik/values.yml -n default
+	kubectl create namespace traefik
+	helm upgrade --install traefik traefik/traefik -f ./traefik/values.yml -n traefik
 
 exporter:
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
